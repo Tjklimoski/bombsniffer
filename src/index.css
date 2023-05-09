@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap');
+
+*, *::after, *::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0
+}
+
+body {
+  font-family: 'Oswald', Helvetica, Arial, sans-serif;
+  background-color: #222;
+  color: #eee;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+#root {
+  width: clamp(100px, 50vmin, 800px);
+}
+
+.title {
+  text-transform: uppercase;
+  font-weight: 200;
+  font-size: clamp(1.25rem, 10vmin, 2.5rem);
+}
+
+.score {
+  font-size: .8rem;
+  margin-bottom: 1rem;
+}
+
+.board {
+  background-color: #555;
+  aspect-ratio: 1;
+  display: grid;
+  gap: 2px;
+  padding: 2px;
+  grid-template-rows: repeat(10, 1fr);
+  grid-template-columns: repeat(10, 1fr);
+  border-radius: 5px;
+}
+
+.tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5vmin;
+  background-color: #888;
+  border: 1px solid #888;
+}
+
+.tile:nth-child(1) {
+  border-radius: 4px 0 0 0;
+}
+
+.tile:nth-child(10) {
+  border-radius: 0 4px 0 0;
+}
+
+.tile:nth-child(91) {
+  border-radius: 0 0 0 4px;
+}
+
+.tile:nth-child(100) {
+  border-radius: 0 0 4px 0;
+}
+
+.board > [data-status="hide"] {
+  cursor: pointer;
+}
+
+.board > [data-status="mine"]::after {
+  background-color: hsl(0 100% 50%);
+  content: '💣';
+  inset: 0;
+}
+
+.board > [data-status="flag"]::after {
+  background-color: hsl(65 100% 50%);
+  content: '🚩';
+  inset: 0;
+}
+
+.board > [data-status="show"] {
+  background: none;
+}
