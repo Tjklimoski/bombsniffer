@@ -43,6 +43,8 @@ export function revealTile(clickedTileId, tiles) {
 export function flagTile(clickedTileId, tiles) {
   return tiles.map((tile) => {
     if (tile.id !== clickedTileId) return tile;
+    if (tile.status === TILE_STATUS.FLAG) return { ...tile, status: TILE_STATUS.HIDE };
+    if (tile.status !== TILE_STATUS.HIDE) return tile;
     return { ...tile, status: TILE_STATUS.FLAG };
   });
 }

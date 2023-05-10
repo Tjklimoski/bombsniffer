@@ -20,7 +20,6 @@ function App() {
   function handleContextMenu(e) {
     e.preventDefault();
     const clickedTileId = e.target.dataset.id;
-    console.log('id: ', clickedTileId)
     if (clickedTileId == null) return;
     setTiles((currentTiles) => flagTile(clickedTileId, currentTiles));
   }
@@ -49,9 +48,7 @@ function App() {
 export default App
 
 //React:
-//State to manage tiles
 //Mines Left count will be managed by tiles state.
-//event handlers for left click (show) and right click (flag)
 //state for score text (win loss)
 
 //Logic:
