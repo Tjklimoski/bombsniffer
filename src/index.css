@@ -3,7 +3,7 @@
 *, *::after, *::before {
   box-sizing: border-box;
   margin: 0;
-  padding: 0
+  padding: 0;
 }
 
 body {
@@ -19,29 +19,29 @@ body {
 }
 
 #root {
-  width: clamp(100px, 50vmin, 800px);
+  width: clamp(200px, 50vmin, 1000px);
 }
 
 .title {
   text-transform: uppercase;
   font-weight: 200;
-  font-size: clamp(1.25rem, 10vmin, 2.5rem);
+  font-size: clamp(3rem, 10vmin, 6rem);
 }
 
 .score {
-  font-size: .8rem;
-  margin-bottom: 1rem;
+  font-size: 2rem;
+  margin-bottom: 2rem;
 }
 
 .board {
   background-color: #555;
   aspect-ratio: 1;
   display: grid;
-  gap: 2px;
-  padding: 2px;
+  gap: 5px;
+  padding: 5px;
   grid-template-rows: repeat(10, 1fr);
   grid-template-columns: repeat(10, 1fr);
-  border-radius: 5px;
+  border-radius: 16px;
 }
 
 .tile {
@@ -50,47 +50,58 @@ body {
   justify-content: center;
   font-size: 2.5vmin;
   background-color: #888;
-  border: 1px solid #888;
-  box-shadow: 1px 1px 3px 0 #0007;
 }
 
 .tile:is([data-status="hide"]):hover {
   background-color: #777;
 }
 
+.tile:is([data-status="hide"]):active {
+  background-color: #666;
+}
+
 .tile:nth-child(1) {
-  border-radius: 4px 0 0 0;
+  border-radius: 12px 0 0 0;
 }
 
 .tile:nth-child(10) {
-  border-radius: 0 4px 0 0;
+  border-radius: 0 12px 0 0;
 }
 
 .tile:nth-child(91) {
-  border-radius: 0 0 0 4px;
+  border-radius: 0 0 0 12px;
 }
 
 .tile:nth-child(100) {
-  border-radius: 0 0 4px 0;
+  border-radius: 0 0 12px 0;
 }
 
 .board > [data-status="hide"] {
   cursor: pointer;
 }
 
-.board > [data-status="mine"]::after {
+.board > [data-status="mine"] {
   background-color: hsl(0 100% 50%);
+}
+
+.board > [data-status="mine"]::after {
   content: '💣';
-  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.board > [data-status="flag"] {
+  background-color: hsl(65 100% 50%);
 }
 
 .board > [data-status="flag"]::after {
-  background-color: hsl(65 100% 50%);
   content: '🚩';
-  inset: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .board > [data-status="show"] {
   background: none;
   box-shadow: none;
+  border: 1px solid #89c2b4;
 }
