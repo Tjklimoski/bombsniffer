@@ -14,12 +14,12 @@ export function createTiles(numberOfMines) {
   //from top to bottome, from left to right
   for (let y = 0; y < BOARD_SIZE; y++) {
     for (let x = 0; x < BOARD_SIZE; x++) {
-      const id = parseInt(`${y}${x}`);
+      const id = `${y}${x}`;
       tiles.push({
         id,
         x,
         y,
-        mine: mines.includes(id),
+        mine: mines.includes(parseInt(id)),
         status: TILE_STATUS.HIDE,
         value: null
       });
@@ -27,6 +27,17 @@ export function createTiles(numberOfMines) {
   }
 
   return tiles;
+}
+
+
+export function revealTile(clickedTileId, tiles) {
+  return tiles.map((tile) => {
+    if (tile.id !== clickedTileId) return tile;
+    if (tile.mine === true) return { ...tile, status: TILE_STATUS.MINE };
+    //set tile value for mine proximity
+    //recursive if value is null (not near a mine)
+    return { ...tile, status: TILE_STATUS.SHOW };
+  });
 }
 
 
