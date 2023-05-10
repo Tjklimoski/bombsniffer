@@ -16,13 +16,7 @@ function App() {
       <h1 className="title">Minesweeper</h1>
       <Score />
       <div className="board">
-        <Tile />
-        <div className="tile" data-status="mine"></div>
-        <div className="tile" data-status="flag"></div>
-        <div className="tile" data-status="show">1</div>
-        <div className="tile" data-status="show">2</div>
-        <div className="tile" data-status="show">3</div>
-        <div className="tile" data-status="show"></div>
+        {tiles.map(tile => <Tile key={tile.id} {...tile} />)}
       </div>
     </>
   );
