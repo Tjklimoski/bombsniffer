@@ -1,4 +1,9 @@
+import PropTypes from 'prop-types';
 
-export default function Score() {
-  return <div className="score">Mines Left: 10</div>
+export default function Score({ minesLeft }) {
+  return <div className="score">Mines Left: {minesLeft}</div>
+}
+
+Score.propTypes = {
+  minesLeft: PropTypes.number
 }

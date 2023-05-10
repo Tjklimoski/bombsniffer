@@ -8,6 +8,12 @@ const NUMBER_OF_MINES = 10;
 function App() {
 
   const [tiles, setTiles] = useState(createTiles(NUMBER_OF_MINES));
+
+  const minesLeft = useCallback(() => {
+    return NUMBER_OF_MINES - tiles.filter((tile) => {
+      return tile.status === TILE_STATUS.FLAG;
+    }).length;
+  }, [tiles])
   
   console.log('tiles after useState: ', tiles);
 
@@ -31,15 +37,18 @@ function App() {
 
     return () => {
       board.removeEventListener('click', handleClick);
+      board.removeEventListener("contextmenu", handleContextMenu);
     }
   }, [])
 
   return (
     <>
       <h1 className="title">Minesweeper</h1>
-      <Score />
+      <Score minesLeft={minesLeft()} />
       <div className="board">
-        {tiles.map(tile => <Tile key={tile.id} {...tile} />)}
+        {tiles.map((tile) => (
+          <Tile key={tile.id} {...tile} />
+        ))}
       </div>
     </>
   );
