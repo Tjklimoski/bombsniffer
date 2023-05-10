@@ -34,7 +34,11 @@ export function revealTile(clickedTileId, tiles) {
   return tiles.map((tile) => {
     if (tile.id !== clickedTileId) return tile;
     if (tile.mine === true) return { ...tile, status: TILE_STATUS.MINE };
-    //set tile value for mine proximity
+    //Set tile value for mine proximity
+    const adjacentTiles = getAdjacentTiles(tile, tiles);
+    // const mineProxCount = adjacentTiles.filter(
+    //   (tile) => tile.mine === true
+    // ).length;
     //recursive if value is null (not near a mine)
     return { ...tile, status: TILE_STATUS.SHOW };
   });
@@ -60,4 +64,23 @@ function getMines(numberOfMines) {
   }
 
   return mines;
+}
+
+function getAdjacentTiles(tile, tiles) {
+  let adjacentTiles = []
+
+  //pull the adjacent tiles
+  for (let xOffset = -1; xOffset <= 1; x++) {
+    for (let yOffset = -1; yOffset <= 1; y++) {
+      const x = tile.x + xOffset;
+      const y = tile.y + yOffset;
+      adjacentTiles = tiles.filter((t) => {
+        //remove the current tile from the adjacent tiles
+        if (t.x === tile.x && t.y === tile.y) return false;
+        return t.x === x && t.y === y;
+      });
+    }
+  }
+
+  return adjacentTiles
 }

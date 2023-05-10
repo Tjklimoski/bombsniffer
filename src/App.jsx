@@ -19,6 +19,7 @@ function App() {
 
   function handleClick(e) {
     const clickedTileId = e.target.dataset.id;
+    console.log(e.target.dataset.status);
     if (clickedTileId == null) return;
     setTiles(currentTiles => revealTile(clickedTileId, currentTiles));
   }
@@ -57,8 +58,8 @@ function App() {
 export default App
 
 //React:
-//Mines Left count will be managed by tiles state.
 //state for score text (win loss)
 
 //Logic:
+//mine proximity to tiles
 //process win loss
