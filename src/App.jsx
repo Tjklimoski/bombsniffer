@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import Score from "./components/Score";
 import Tile from "./components/Tile";
-import { TILE_STATUS, createTiles, revealTile } from "./util/minesweeper";
+import { TILE_STATUS, createTiles, revealTile, flagTile } from "./util/minesweeper";
 
 const NUMBER_OF_MINES = 10;
 
@@ -17,10 +17,18 @@ function App() {
     setTiles(currentTiles => revealTile(clickedTileId, currentTiles));
   }
 
+  function handleContextMenu(e) {
+    e.preventDefault();
+    const clickedTileId = e.target.dataset.id;
+    console.log('id: ', clickedTileId)
+    if (clickedTileId == null) return;
+    setTiles((currentTiles) => flagTile(clickedTileId, currentTiles));
+  }
+
   useEffect(() => {
     const board = document.querySelector('.board')
     board.addEventListener('click', handleClick)
-    // board.addEventListener('contextmenu', handleContext);
+    board.addEventListener('contextmenu', handleContextMenu);
 
     return () => {
       board.removeEventListener('click', handleClick);
