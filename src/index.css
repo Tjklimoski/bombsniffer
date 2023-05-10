@@ -51,6 +51,11 @@ body {
   font-size: 2.5vmin;
   background-color: #888;
   border: 1px solid #888;
+  box-shadow: 1px 1px 3px 0 #0007;
+}
+
+.tile:is([data-status="hide"]):hover {
+  background-color: #777;
 }
 
 .tile:nth-child(1) {
@@ -87,4 +92,5 @@ body {
 
 .board > [data-status="show"] {
   background: none;
+  box-shadow: none;
 }

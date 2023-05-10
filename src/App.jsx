@@ -1,22 +1,22 @@
+import { useState } from 'react';
 import Score from "./components/Score";
 import Tile from "./components/Tile";
+import { TILE_STATUS, createTiles } from "./util/minesweeper";
 
-const TILE_STATUS = {
-  HIDE: 'hide',
-  MINE: 'mine',
-  FLAG: 'flag',
-  SHOW: 'show'
-}
+const NUMBER_OF_MINES = 10;
 
 function App() {
+
+  const [tiles, setTiles] = useState(createTiles(NUMBER_OF_MINES));
   
+  console.log(tiles);
 
   return (
     <>
       <h1 className="title">Minesweeper</h1>
       <Score />
       <div className="board">
-        <Tile status={TILE_STATUS.HIDE}/>
+        <Tile />
         <div className="tile" data-status="mine"></div>
         <div className="tile" data-status="flag"></div>
         <div className="tile" data-status="show">1</div>
