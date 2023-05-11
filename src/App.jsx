@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import Score from "./components/Score";
 import Tile from "./components/Tile";
-import { TILE_STATUS, createTiles, revealTile, flagTile } from "./util/minesweeper";
+import { TILE_STATUS, createTiles, revealTile, toggleFlag } from "./util/minesweeper";
 
 const NUMBER_OF_MINES = 10;
 
@@ -28,7 +28,7 @@ function App() {
     e.preventDefault();
     const clickedTileId = e.target.dataset.id;
     if (clickedTileId == null) return;
-    setTiles((currentTiles) => flagTile(clickedTileId, currentTiles));
+    setTiles((currentTiles) => toggleFlag(clickedTileId, currentTiles));
   }
 
   useEffect(() => {

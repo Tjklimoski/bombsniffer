@@ -26,25 +26,45 @@ export function createTiles(numberOfMines) {
     }
   }
 
+  tiles.forEach(tile => {
+    const adjacentTiles = getAdjacentTiles(tile, tiles);
+    let value = adjacentTiles.filter((tile) => tile.mine === true).length;
+    if (value === 0) value = null;
+    tile.value = value;
+  })
+
   return tiles;
 }
 
 
 export function revealTile(clickedTileId, tiles) {
-  return tiles.map((tile) => {
-    if (tile.id !== clickedTileId) return tile;
-    if (tile.mine === true) return { ...tile, status: TILE_STATUS.MINE };
-    //Set tile value for mine proximity
-    const adjacentTiles = getAdjacentTiles(tile, tiles);
-    // const mineProxCount = adjacentTiles.filter(
-    //   (tile) => tile.mine === true
-    // ).length;
-    //recursive if value is null (not near a mine)
-    return { ...tile, status: TILE_STATUS.SHOW };
-  });
+
+  let newTiles = [];
+  createNewTilesArray(clickedTileId, tiles, newTiles);
+
+  return tiles.map(tile => {
+    const newTile = newTiles.find(newTile => newTile.id === tile.id)
+    if (newTile) return newTile;
+    return tile;
+  })
+
+  // tiles.map((tile) => {
+  //   if (tile.id !== clickedTileId) return tile;
+  //   if (tile.mine === true) return { ...tile, status: TILE_STATUS.MINE };
+  //   return { ...tile, status: TILE_STATUS.SHOW };
+  // });
+
+  // if (adjacentTiles.length && !mineProxCount) {
+  //   adjacentTiles.forEach(tile => {
+  //     return newTiles = revealTile(tile.id, newTiles);
+  //   })
+  // }
+
+  // return newTiles;
+
 }
 
-export function flagTile(clickedTileId, tiles) {
+export function toggleFlag(clickedTileId, tiles) {
   return tiles.map((tile) => {
     if (tile.id !== clickedTileId) return tile;
     if (tile.status === TILE_STATUS.FLAG) return { ...tile, status: TILE_STATUS.HIDE };
@@ -53,6 +73,24 @@ export function flagTile(clickedTileId, tiles) {
   });
 }
 
+
+function createNewTilesArray(clickedTileId, tiles, newTiles) {
+  tiles.forEach(tile => {
+    if (tile.id === clickedTileId) {
+      if (tile.mine === true) return newTiles.push({ ...tile, status: TILE_STATUS.MINE });
+      if (tile.value === null) {
+        newTiles.push({ ...tile, status: TILE_STATUS.SHOW });
+        const adjacentTiles = getAdjacentTiles(tile, tiles);
+        adjacentTiles.forEach((tile) => {
+          if (newTiles.some((t) => t.id === tile.id)) return;
+          createNewTilesArray(tile.id, tiles, newTiles);
+        });
+        return;
+      }
+      return newTiles.push({ ...tile, status: TILE_STATUS.SHOW });
+    }
+  })
+}
 
 function getMines(numberOfMines) {
   const mines = [];
@@ -70,17 +108,16 @@ function getAdjacentTiles(tile, tiles) {
   let adjacentTiles = []
 
   //pull the adjacent tiles
-  for (let xOffset = -1; xOffset <= 1; x++) {
-    for (let yOffset = -1; yOffset <= 1; y++) {
-      const x = tile.x + xOffset;
-      const y = tile.y + yOffset;
-      adjacentTiles = tiles.filter((t) => {
-        //remove the current tile from the adjacent tiles
-        if (t.x === tile.x && t.y === tile.y) return false;
-        return t.x === x && t.y === y;
-      });
+  for (let xOffset = -1; xOffset <= 1; xOffset++) {
+    for (let yOffset = -1; yOffset <= 1; yOffset++) {
+      const y = tile.y + yOffset
+      const x = tile.x + xOffset
+      tiles.forEach(t => {
+        if (t.x === tile.x && t.y === tile.y) return;
+        if (t.x === x && t.y === y) adjacentTiles.push(t);
+      })
     }
   }
 
-  return adjacentTiles
+  return adjacentTiles;
 }
