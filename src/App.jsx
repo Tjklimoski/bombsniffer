@@ -1,13 +1,25 @@
 import { useState, useEffect, useCallback } from 'react';
 import Score from "./components/Score";
 import Tile from "./components/Tile";
-import { TILE_STATUS, createTiles, revealTile, toggleFlag } from "./util/minesweeper";
+import {
+  TILE_STATUS,
+  MESSAGE_STATUS,
+  createTiles,
+  revealTile,
+  toggleFlag,
+  checkWinLoss,
+} from "./util/minesweeper";
 
 const NUMBER_OF_MINES = 10;
 
 function App() {
 
   const [tiles, setTiles] = useState(createTiles(NUMBER_OF_MINES));
+  const [message, setMessage] = useState(MESSAGE_STATUS.SCORE);
+
+  useEffect(() => {
+    setMessage(checkWinLoss(tiles));
+  }, [tiles])
 
   const minesLeft = useCallback(() => {
     return NUMBER_OF_MINES - tiles.filter((tile) => {
@@ -45,7 +57,7 @@ function App() {
   return (
     <>
       <h1 className="title">Minesweeper</h1>
-      <Score minesLeft={minesLeft()} />
+      <Score message={message} minesLeft={minesLeft()} />
       <div className="board">
         {tiles.map((tile) => (
           <Tile key={tile.id} {...tile} />
@@ -59,7 +71,10 @@ export default App
 
 //React:
 //state for score text (win loss)
+//have win loss reveal the mine tiles
 
 //Logic:
-//mine proximity to tiles
 //process win loss
+
+//refactor:
+//state still updates when left clicked or right clicked on an already shown tile

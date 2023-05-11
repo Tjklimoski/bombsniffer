@@ -7,11 +7,17 @@ export const TILE_STATUS = {
   SHOW: 'show'
 }
 
+export const MESSAGE_STATUS = {
+  SCORE: "score",
+  WIN: "win",
+  LOSS: "loss",
+};
+
 export function createTiles(numberOfMines) {
   const tiles = [];
   const mines = getMines(numberOfMines);
 
-  //from top to bottome, from left to right
+  //from top to bottome and left to right
   for (let y = 0; y < BOARD_SIZE; y++) {
     for (let x = 0; x < BOARD_SIZE; x++) {
       const id = `${y}${x}`;
@@ -26,6 +32,7 @@ export function createTiles(numberOfMines) {
     }
   }
 
+  //set value property on each tile (mine proximity)
   tiles.forEach(tile => {
     const adjacentTiles = getAdjacentTiles(tile, tiles);
     let value = adjacentTiles.filter((tile) => tile.mine === true).length;
@@ -38,7 +45,6 @@ export function createTiles(numberOfMines) {
 
 
 export function revealTile(clickedTileId, tiles) {
-
   let newTiles = [];
   createNewTilesArray(clickedTileId, tiles, newTiles);
 
@@ -47,21 +53,6 @@ export function revealTile(clickedTileId, tiles) {
     if (newTile) return newTile;
     return tile;
   })
-
-  // tiles.map((tile) => {
-  //   if (tile.id !== clickedTileId) return tile;
-  //   if (tile.mine === true) return { ...tile, status: TILE_STATUS.MINE };
-  //   return { ...tile, status: TILE_STATUS.SHOW };
-  // });
-
-  // if (adjacentTiles.length && !mineProxCount) {
-  //   adjacentTiles.forEach(tile => {
-  //     return newTiles = revealTile(tile.id, newTiles);
-  //   })
-  // }
-
-  // return newTiles;
-
 }
 
 export function toggleFlag(clickedTileId, tiles) {
@@ -71,6 +62,24 @@ export function toggleFlag(clickedTileId, tiles) {
     if (tile.status !== TILE_STATUS.HIDE) return tile;
     return { ...tile, status: TILE_STATUS.FLAG };
   });
+}
+
+export function checkWinLoss(tiles) {
+
+  //loss condition:
+  if (tiles.some(tile => tile.status === TILE_STATUS.MINE)) return MESSAGE_STATUS.LOSS;
+
+  //win condition:
+  if (tiles.every(tile => {
+    return (
+      tile.status === TILE_STATUS.SHOW ||
+      (tile.mine &&
+        (tile.status === TILE_STATUS.HIDE || tile.status === TILE_STATUS.FLAG))
+    );
+  })) return MESSAGE_STATUS.WIN;
+
+  //default return
+  return MESSAGE_STATUS.SCORE;
 }
 
 
