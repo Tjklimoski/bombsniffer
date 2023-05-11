@@ -65,10 +65,13 @@ export function toggleFlag(clickedTileId, tiles) {
 }
 
 export function checkWinLoss(currentMessage, tiles) {
-  //to stop message from changing when all tiles are revealed on win or lose
+  //to stop message from changing when all tiles are revealed on win or loss
   if (currentMessage !== MESSAGE_STATUS.SCORE) return currentMessage;
+  
   //loss condition:
-  if (tiles.some(tile => tile.status === TILE_STATUS.MINE)) return MESSAGE_STATUS.LOSS;
+  if (tiles.some(tile => {
+    return tile.status === TILE_STATUS.MINE
+  })) return MESSAGE_STATUS.LOSS;
 
   //win condition:
   if (tiles.every(tile => {

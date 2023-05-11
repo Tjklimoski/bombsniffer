@@ -9,7 +9,7 @@ import {
   toggleFlag,
   checkWinLoss,
   revealAll
-} from "./util/minesweeper";
+} from "./util/bombsniffer";
 
 const NUMBER_OF_MINES = 10;
 
@@ -18,31 +18,37 @@ function App() {
   const [tiles, setTiles] = useState(createTiles(NUMBER_OF_MINES));
   const [message, setMessage] = useState(MESSAGE_STATUS.SCORE);
 
+  console.log(tiles);
+
+  //reveal all tiles if player won or loss
   useEffect(() => {
     if (message === MESSAGE_STATUS.WIN || message === MESSAGE_STATUS.LOSS) {
       setTiles(currentTiles => revealAll(currentTiles))
     }
   }, [message])
 
+  //check for win/loss when tiles change, set messagae state accordingly
   useEffect(() => {
     setMessage(currentMessage => checkWinLoss(currentMessage, tiles));
   }, [tiles])
 
+  //set number of mines left on board based off of user's flagged tiles count.
+  //passed to Score componenet
   const minesLeft = useCallback(() => {
-    return NUMBER_OF_MINES - tiles.filter((tile) => {
+    const numberOfFlags = tiles.filter((tile) => {
       return tile.status === TILE_STATUS.FLAG;
     }).length;
+    return NUMBER_OF_MINES - numberOfFlags;
   }, [tiles])
-  
-  console.log('tiles after useState: ', tiles);
 
+  //handles left click by user, which will reveal the tile clicked.
   function handleClick(e) {
     const clickedTileId = e.target.dataset.id;
-    console.log(e.target.dataset.status);
     if (clickedTileId == null) return;
     setTiles(currentTiles => revealTile(clickedTileId, currentTiles));
   }
 
+  //handle right click by users, which will toggle the flag on the tile.
   function handleContextMenu(e) {
     e.preventDefault();
     const clickedTileId = e.target.dataset.id;
@@ -50,6 +56,7 @@ function App() {
     setTiles((currentTiles) => toggleFlag(clickedTileId, currentTiles));
   }
 
+  //Creates left and right click event listeners on component mount.
   useEffect(() => {
     const board = document.querySelector('.board')
     board.addEventListener('click', handleClick)
@@ -63,7 +70,7 @@ function App() {
 
   return (
     <>
-      <h1 className="title">Minesweeper</h1>
+      <h1 className="title">Bombsniffer</h1>
       <Score message={message} minesLeft={minesLeft()} />
       <div className="board">
         {tiles.map((tile) => (

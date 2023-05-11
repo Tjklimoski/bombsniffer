@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { TILE_STATUS } from '../util/minesweeper';
+import { TILE_STATUS } from '../util/bombsniffer';
 
 export default function Tile({ status, id, value }) {
   return <div className="tile" data-status={status} data-id={id}>
