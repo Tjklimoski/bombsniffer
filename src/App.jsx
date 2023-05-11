@@ -8,6 +8,7 @@ import {
   revealTile,
   toggleFlag,
   checkWinLoss,
+  revealAll
 } from "./util/minesweeper";
 
 const NUMBER_OF_MINES = 10;
@@ -18,7 +19,13 @@ function App() {
   const [message, setMessage] = useState(MESSAGE_STATUS.SCORE);
 
   useEffect(() => {
-    setMessage(checkWinLoss(tiles));
+    if (message === MESSAGE_STATUS.WIN || message === MESSAGE_STATUS.LOSS) {
+      setTiles(currentTiles => revealAll(currentTiles))
+    }
+  }, [message])
+
+  useEffect(() => {
+    setMessage(currentMessage => checkWinLoss(currentMessage, tiles));
   }, [tiles])
 
   const minesLeft = useCallback(() => {
@@ -70,11 +77,7 @@ function App() {
 export default App
 
 //React:
-//state for score text (win loss)
-//have win loss reveal the mine tiles
-
-//Logic:
-//process win loss
+//Have win loss stop interactiviy on board
 
 //refactor:
 //state still updates when left clicked or right clicked on an already shown tile
