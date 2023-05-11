@@ -46,7 +46,6 @@ export function createTiles(numberOfMines) {
   return tiles;
 }
 
-
 export function revealTile(clickedTileId, tiles) {
   let newTiles = [];
   //push the tiles that need their status changed to the newTiles array

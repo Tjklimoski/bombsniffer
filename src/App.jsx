@@ -16,9 +16,7 @@ function App() {
   const [tiles, setTiles] = useState(createTiles(NUMBER_OF_MINES));
   const [message, setMessage] = useState(MESSAGE_STATUS.SCORE);
 
-  console.log(tiles);
-
-  //reveal all tiles if player won or loss
+  //reveal all tiles if player won or loss, prevent clicks propegating
   useEffect(() => {
     const preventProp = (e) => {
       e.stopImmediatePropagation();
@@ -32,7 +30,7 @@ function App() {
     }
   }, [message]);
 
-  //check for win/loss when tiles change, set messagae state accordingly
+  //check for win/loss when tiles change, set message state accordingly
   useEffect(() => {
     setMessage((currentMessage) => checkWinLoss(currentMessage, tiles));
   }, [tiles]);
@@ -113,4 +111,4 @@ function App() {
   );
 }
 
-export default App
+export default App;
