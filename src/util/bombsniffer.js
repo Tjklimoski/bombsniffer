@@ -1,5 +1,7 @@
 const BOARD_SIZE = 10;
 
+export const NUMBER_OF_MINES = 10;
+
 export const TILE_STATUS = {
   HIDE: 'hide',
   MINE: 'mine',
@@ -67,7 +69,7 @@ export function toggleFlag(clickedTileId, tiles) {
 export function checkWinLoss(currentMessage, tiles) {
   //to stop message from changing when all tiles are revealed on win or loss
   if (currentMessage !== MESSAGE_STATUS.SCORE) return currentMessage;
-  
+
   //loss condition:
   if (tiles.some(tile => {
     return tile.status === TILE_STATUS.MINE
