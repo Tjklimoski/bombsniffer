@@ -35,6 +35,7 @@ export function createTiles(numberOfMines) {
   }
 
   //set value property on each tile (mine proximity)
+  //must be done after all tiles are created and placed in tiles array.
   tiles.forEach(tile => {
     const adjacentTiles = getAdjacentTiles(tile, tiles);
     let value = adjacentTiles.filter((tile) => tile.mine === true).length;
@@ -48,9 +49,11 @@ export function createTiles(numberOfMines) {
 
 export function revealTile(clickedTileId, tiles) {
   let newTiles = [];
-  createNewTilesArray(clickedTileId, tiles, newTiles);
+  //push the tiles that need their status changed to the newTiles array
+  addToNewTilesArray(clickedTileId, tiles, newTiles);
 
   return tiles.map(tile => {
+    //replace current tile if there's a new tile that has a matching id
     const newTile = newTiles.find(newTile => newTile.id === tile.id)
     if (newTile) return newTile;
     return tile;
@@ -60,8 +63,8 @@ export function revealTile(clickedTileId, tiles) {
 export function toggleFlag(clickedTileId, tiles) {
   return tiles.map((tile) => {
     if (tile.id !== clickedTileId) return tile;
+    //all clickedTileId tiles will have a status of hide or flag (checked in react)
     if (tile.status === TILE_STATUS.FLAG) return { ...tile, status: TILE_STATUS.HIDE };
-    if (tile.status !== TILE_STATUS.HIDE) return tile;
     return { ...tile, status: TILE_STATUS.FLAG };
   });
 }
@@ -95,28 +98,30 @@ export function revealAll(tiles) {
   })
 }
 
-
-function createNewTilesArray(clickedTileId, tiles, newTiles) {
-  tiles.forEach(tile => {
-    if (tile.id === clickedTileId) {
-      if (tile.mine === true) return newTiles.push({ ...tile, status: TILE_STATUS.MINE });
-      if (tile.value === null) {
-        newTiles.push({ ...tile, status: TILE_STATUS.SHOW });
-        const adjacentTiles = getAdjacentTiles(tile, tiles);
-        adjacentTiles.forEach((tile) => {
-          if (newTiles.some((t) => t.id === tile.id)) return;
-          createNewTilesArray(tile.id, tiles, newTiles);
-        });
-        return;
-      }
-      return newTiles.push({ ...tile, status: TILE_STATUS.SHOW });
+function addToNewTilesArray(clickedTileId, tiles, newTiles = []) {
+  tiles.forEach((tile) => {
+    if (tile.id !== clickedTileId) return;
+    if (tile.mine === true)
+      return newTiles.push({ ...tile, status: TILE_STATUS.MINE });
+    //reveal all tiles adjacent to a null tile, recursively call addToNewTilesArray
+    if (tile.value === null) {
+      newTiles.push({ ...tile, status: TILE_STATUS.SHOW });
+      const adjacentTiles = getAdjacentTiles(tile, tiles);
+      adjacentTiles.forEach((tile) => {
+        //if the adjacent tile already exists in newTiles array, don't call addToNewTilesArray
+        if (newTiles.some((t) => t.id === tile.id)) return;
+        addToNewTilesArray(tile.id, tiles, newTiles);
+      });
     }
-  })
+    //if tile is not a mine, or value is not null, then just show the tile
+    return newTiles.push({ ...tile, status: TILE_STATUS.SHOW });
+  });
 }
 
 function getMines(numberOfMines) {
   const mines = [];
 
+  //create an array of random positions that correspond to the tile id
   while (mines.length < numberOfMines) {
     let newPos = Math.floor(Math.random() * BOARD_SIZE**2)
     if (mines.some(pos => pos === newPos)) continue;
@@ -135,7 +140,9 @@ function getAdjacentTiles(tile, tiles) {
       const y = tile.y + yOffset
       const x = tile.x + xOffset
       tiles.forEach(t => {
+        //prevent the tile itself entering adjacentTiles array
         if (t.x === tile.x && t.y === tile.y) return;
+
         if (t.x === x && t.y === y) adjacentTiles.push(t);
       })
     }
