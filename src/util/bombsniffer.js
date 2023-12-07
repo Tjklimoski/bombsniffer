@@ -106,23 +106,24 @@ export function revealAll(tiles) {
 }
 
 function addToNewTilesArray(clickedTileId, tiles, newTiles = []) {
-  tiles.forEach(tile => {
-    if (tile.id !== clickedTileId) return;
-    if (tile.mine === true)
-      return newTiles.push({ ...tile, status: TILE_STATUS.MINE });
-    //reveal all tiles adjacent to a null tile, recursively call addToNewTilesArray
-    if (tile.value === null) {
-      newTiles.push({ ...tile, status: TILE_STATUS.SHOW });
-      const adjacentTiles = getAdjacentTiles(tile, tiles);
-      adjacentTiles.forEach(tile => {
-        //if the adjacent tile already exists in newTiles array, don't call addToNewTilesArray
-        if (newTiles.some(t => t.id === tile.id)) return;
-        addToNewTilesArray(tile.id, tiles, newTiles);
-      });
-    }
-    //if tile is not a mine, or value is not null, then just show the tile
-    return newTiles.push({ ...tile, status: TILE_STATUS.SHOW });
-  });
+  const tile = tiles[parseInt(clickedTileId)];
+
+  if (tile.mine === true)
+    return newTiles.push({ ...tile, status: TILE_STATUS.MINE });
+
+  //reveal all tiles adjacent to a null tile, recursively call addToNewTilesArray
+  if (tile.value === null) {
+    newTiles.push({ ...tile, status: TILE_STATUS.SHOW });
+    const adjacentTiles = getAdjacentTiles(tile, tiles);
+    adjacentTiles.forEach(tile => {
+      //if the adjacent tile already exists in newTiles array, don't call addToNewTilesArray
+      if (newTiles.some(t => t.id === tile.id)) return;
+      addToNewTilesArray(tile.id, tiles, newTiles);
+    });
+  }
+
+  //if tile is not a mine, or value is not null, then just show the tile
+  return newTiles.push({ ...tile, status: TILE_STATUS.SHOW });
 }
 
 function getMines(numberOfMines) {
@@ -161,8 +162,6 @@ function getAdjacentTiles(tile, tiles) {
       adjacentTiles.push(tiles[index]);
     }
   }
-
-  console.log(adjacentTiles);
 
   return adjacentTiles;
 }
