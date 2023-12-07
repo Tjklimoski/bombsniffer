@@ -147,14 +147,22 @@ function getAdjacentTiles(tile, tiles) {
     for (let yOffset = -1; yOffset <= 1; yOffset++) {
       const y = tile.y + yOffset;
       const x = tile.x + xOffset;
-      tiles.forEach(t => {
-        //prevent the tile itself entering adjacentTiles array
-        if (t.x === tile.x && t.y === tile.y) return;
 
-        if (t.x === x && t.y === y) adjacentTiles.push(t);
-      });
+      //prevent the tile itself entering adjacentTiles array
+      if (y === tile.y && x === tile.x) continue;
+      // If the x or y value is outside the range of the grid, move to next number in loop.
+      if (
+        Math.floor(y / NUMBER_OF_MINES) !== 0 ||
+        Math.floor(x / NUMBER_OF_MINES) !== 0
+      )
+        continue;
+
+      const index = y * NUMBER_OF_MINES + x;
+      adjacentTiles.push(tiles[index]);
     }
   }
+
+  console.log(adjacentTiles);
 
   return adjacentTiles;
 }
