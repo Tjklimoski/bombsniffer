@@ -60,6 +60,7 @@ export function revealTile(clickedTileId, tiles) {
 }
 
 export function toggleFlag(clickedTileId, tiles) {
+  // must return a new array due to referential equality in react.
   return tiles.map(tile => {
     if (tile.id !== clickedTileId) return tile;
     //all clickedTileId tiles will have a status of hide or flag (checked in react)
