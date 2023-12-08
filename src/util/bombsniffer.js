@@ -47,7 +47,7 @@ export function createTiles(numberOfMines) {
 }
 
 export function revealTile(clickedTileId, tiles) {
-  let newTiles = [];
+  const newTiles = [];
   //push the tiles that need their status changed to the newTiles array
   addToNewTilesArray(clickedTileId, tiles, newTiles);
 
@@ -153,13 +153,10 @@ function getAdjacentTiles(tile, tiles) {
       //prevent the tile itself entering adjacentTiles array
       if (y === tile.y && x === tile.x) continue;
       // If the x or y value is outside the range of the grid, move to next number in loop.
-      if (
-        Math.floor(y / NUMBER_OF_MINES) !== 0 ||
-        Math.floor(x / NUMBER_OF_MINES) !== 0
-      )
+      if (Math.floor(y / BOARD_SIZE) !== 0 || Math.floor(x / BOARD_SIZE) !== 0)
         continue;
 
-      const index = y * NUMBER_OF_MINES + x;
+      const index = y * BOARD_SIZE + x;
       adjacentTiles.push(tiles[index]);
     }
   }
