@@ -19,21 +19,30 @@ function App() {
 
   function resetBoard(numberOfMines) {
     setTiles(createTiles(numberOfMines));
+    setMessage(MESSAGE_STATUS.SCORE);
   }
+
+  // Used in useEffect once a win/loss state is achieved
+  const preventProp = useCallback(e => {
+    e.stopImmediatePropagation();
+  }, []);
 
   //reveal all tiles if player won or loss, prevent clicks propegating
   useEffect(() => {
-    const preventProp = e => {
-      e.stopImmediatePropagation();
-    };
+    const board = document.querySelector(".board");
 
     if (message === MESSAGE_STATUS.WIN || message === MESSAGE_STATUS.LOSS) {
       setTiles(currentTiles => revealAll(currentTiles));
-      const board = document.querySelector(".board");
       board.addEventListener("click", preventProp, { capture: true });
       board.addEventListener("contextmenu", preventProp, { capture: true });
     }
-  }, [message]);
+
+    if (message === MESSAGE_STATUS.SCORE) {
+      console.log("running remove event listener");
+      board.removeEventListener("click", preventProp, { capture: true });
+      board.removeEventListener("contextmenu", preventProp, { capture: true });
+    }
+  }, [message, preventProp]);
 
   //check for win/loss when tiles change, set message state accordingly
   useEffect(() => {
