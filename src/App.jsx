@@ -106,7 +106,7 @@ function App() {
     <>
       <h1 className="title">Bombsniffer</h1>
       <Score message={message} minesLeft={minesLeft()} />
-      <Settings />
+      <Settings resetBoard={resetBoard} />
       <div className="board">
         {tiles.map(tile => (
           <Tile key={tile.id} {...tile} />

@@ -1,3 +1,3 @@
-export default function Settings() {
+export default function Settings({ resetBoard }) {
   return <div>Settings</div>;
 }
