@@ -1,6 +1,14 @@
 import PropTypes from "prop-types";
+import { useState } from "react";
+import { NUMBER_OF_MINES } from "../util/bombsniffer";
 
 export default function Settings({ resetBoard }) {
+  const [bombCount, setBombCount] = useState(NUMBER_OF_MINES);
+
+  function handleChange(e) {
+    setBombCount(e.target.value);
+  }
+
   return (
     <form>
       <div>
@@ -13,6 +21,8 @@ export default function Settings({ resetBoard }) {
           max="99"
           step="1"
           list="defaultBombCounts"
+          value={bombCount}
+          onChange={handleChange}
           required
         />
         <datalist id="defaultBombCounts">
