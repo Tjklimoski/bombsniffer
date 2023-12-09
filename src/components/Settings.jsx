@@ -9,8 +9,13 @@ export default function Settings({ resetBoard }) {
     setBombCount(e.target.value);
   }
 
+  function handleSubmit(e) {
+    e.preventDefault();
+    resetBoard(bombCount);
+  }
+
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <div>
         <label htmlFor="bombCount">Number of bombs:</label>
         <input
