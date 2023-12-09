@@ -14,11 +14,12 @@ import {
 } from "./util/bombsniffer";
 
 function App() {
-  const [tiles, setTiles] = useState(createTiles(NUMBER_OF_MINES));
+  const [bombCount, setBombCount] = useState(NUMBER_OF_MINES);
+  const [tiles, setTiles] = useState(createTiles(bombCount));
   const [message, setMessage] = useState(MESSAGE_STATUS.SCORE);
 
-  function resetBoard(numberOfMines) {
-    setTiles(createTiles(numberOfMines));
+  function resetBoard() {
+    setTiles(createTiles(bombCount));
     setMessage(MESSAGE_STATUS.SCORE);
   }
 
@@ -38,7 +39,6 @@ function App() {
     }
 
     if (message === MESSAGE_STATUS.SCORE) {
-      console.log("running remove event listener");
       board.removeEventListener("click", preventProp, { capture: true });
       board.removeEventListener("contextmenu", preventProp, { capture: true });
     }
@@ -115,7 +115,11 @@ function App() {
     <>
       <h1 className="title">Bombsniffer</h1>
       <Score message={message} minesLeft={minesLeft()} />
-      <Settings resetBoard={resetBoard} />
+      <Settings
+        resetBoard={resetBoard}
+        bombCount={bombCount}
+        setBombCount={setBombCount}
+      />
       <div className="board">
         {tiles.map(tile => (
           <Tile key={tile.id} {...tile} />

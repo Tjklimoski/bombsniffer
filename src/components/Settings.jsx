@@ -1,17 +1,13 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
-import { NUMBER_OF_MINES } from "../util/bombsniffer";
 
-export default function Settings({ resetBoard }) {
-  const [bombCount, setBombCount] = useState(NUMBER_OF_MINES);
-
+export default function Settings({ resetBoard, bombCount, setBombCount }) {
   function handleChange(e) {
     setBombCount(e.target.value);
   }
 
   function handleSubmit(e) {
     e.preventDefault();
-    resetBoard(bombCount);
+    resetBoard();
   }
 
   return (
@@ -46,4 +42,6 @@ export default function Settings({ resetBoard }) {
 
 Settings.propTypes = {
   resetBoard: PropTypes.func,
+  bombCount: PropTypes.number,
+  setBombCount: PropTypes.func,
 };
