@@ -17,6 +17,10 @@ function App() {
   const [tiles, setTiles] = useState(createTiles(NUMBER_OF_MINES));
   const [message, setMessage] = useState(MESSAGE_STATUS.SCORE);
 
+  function resetBoard(numberOfMines) {
+    setTiles(createTiles(numberOfMines));
+  }
+
   //reveal all tiles if player won or loss, prevent clicks propegating
   useEffect(() => {
     const preventProp = e => {
