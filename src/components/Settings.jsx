@@ -14,10 +14,11 @@ export default function Settings({ resetBoard, activeBombs }) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
+    <form onSubmit={handleSubmit} className="settings">
+      <div className="input-group">
         <label htmlFor="bombCount">Number of bombs:</label>
         <input
+          className="bomb-counter-input"
           type="number"
           id="bombCount"
           name="bombCount"
@@ -38,7 +39,9 @@ export default function Settings({ resetBoard, activeBombs }) {
           <option value="99" />
         </datalist>
       </div>
-      <button type="submit">Reset</button>
+      <button type="submit" className="reset-btn">
+        Reset
+      </button>
     </form>
   );
 }
