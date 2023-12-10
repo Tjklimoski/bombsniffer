@@ -14,12 +14,13 @@ import {
 } from "./util/bombsniffer";
 
 function App() {
-  const [bombCount, setBombCount] = useState(NUMBER_OF_MINES);
-  const [tiles, setTiles] = useState(createTiles(bombCount));
+  const [activeBombs, setActiveBombs] = useState(NUMBER_OF_MINES);
+  const [tiles, setTiles] = useState(createTiles(activeBombs));
   const [message, setMessage] = useState(MESSAGE_STATUS.SCORE);
 
-  function resetBoard() {
-    setTiles(createTiles(bombCount));
+  function resetBoard(inputBombCount) {
+    setActiveBombs(inputBombCount);
+    setTiles(createTiles(inputBombCount));
     setMessage(MESSAGE_STATUS.SCORE);
   }
 
@@ -55,8 +56,8 @@ function App() {
     const numberOfFlags = tiles.filter(tile => {
       return tile.status === TILE_STATUS.FLAG;
     }).length;
-    return NUMBER_OF_MINES - numberOfFlags;
-  }, [tiles]);
+    return activeBombs - numberOfFlags;
+  }, [tiles, activeBombs]);
 
   //handles left click by user, which will reveal the tile clicked.
   const handleClick = useCallback(
@@ -115,11 +116,7 @@ function App() {
     <>
       <h1 className="title">Bombsniffer</h1>
       <Score message={message} minesLeft={minesLeft()} />
-      <Settings
-        resetBoard={resetBoard}
-        bombCount={bombCount}
-        setBombCount={setBombCount}
-      />
+      <Settings resetBoard={resetBoard} activeBombs={activeBombs} />
       <div className="board">
         {tiles.map(tile => (
           <Tile key={tile.id} {...tile} />

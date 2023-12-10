@@ -1,13 +1,16 @@
 import PropTypes from "prop-types";
+import { useState } from "react";
 
-export default function Settings({ resetBoard, bombCount, setBombCount }) {
+export default function Settings({ resetBoard, activeBombs }) {
+  const [inputBombCount, setInputBombCount] = useState(activeBombs);
+
   function handleChange(e) {
-    setBombCount(e.target.value);
+    setInputBombCount(e.target.value);
   }
 
   function handleSubmit(e) {
     e.preventDefault();
-    resetBoard();
+    resetBoard(inputBombCount);
   }
 
   return (
@@ -22,7 +25,7 @@ export default function Settings({ resetBoard, bombCount, setBombCount }) {
           max="99"
           step="1"
           list="defaultBombCounts"
-          value={bombCount}
+          value={inputBombCount}
           onChange={handleChange}
           required
         />
@@ -42,6 +45,5 @@ export default function Settings({ resetBoard, bombCount, setBombCount }) {
 
 Settings.propTypes = {
   resetBoard: PropTypes.func,
-  bombCount: PropTypes.number,
-  setBombCount: PropTypes.func,
+  activeBombs: PropTypes.number,
 };
