@@ -81,6 +81,20 @@ body {
   gap: 1rem;
 }
 
+.bomb-counter-input {
+  border: none;
+  background-color: #777;
+  color: #eee;
+  font-size: 1rem;
+  padding: 0.2rem 0 0.2rem 0.4rem;
+  border-radius: 0.2rem;
+  width: 6ch;
+}
+
+.bomb-counter-input:focus {
+  outline: 2px solid var(--accent);
+}
+
 .board {
   background-color: #555;
   aspect-ratio: 1;
