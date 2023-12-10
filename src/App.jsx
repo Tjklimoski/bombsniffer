@@ -122,6 +122,7 @@ function App() {
           <Tile key={tile.id} {...tile} />
         ))}
       </div>
+      <p className="tip">Tip: Right click on a tile to flag a potential bomb</p>
     </>
   );
 }
