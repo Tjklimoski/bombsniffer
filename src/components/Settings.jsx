@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
+import { MdOutlineRefresh } from "react-icons/md";
 
 export default function Settings({ resetBoard, activeBombs }) {
   const [inputBombCount, setInputBombCount] = useState(activeBombs);
@@ -39,8 +40,8 @@ export default function Settings({ resetBoard, activeBombs }) {
           <option value="99" />
         </datalist>
       </div>
-      <button type="submit" className="reset-btn">
-        Reset
+      <button type="submit" className="reset-btn" aria-label="Reset board">
+        <MdOutlineRefresh />
       </button>
     </form>
   );
