@@ -40,6 +40,11 @@ body {
   margin-bottom: 2rem;
 }
 
+.tip {
+  font-size: clamp(0.75rem, 5vmin, 1.5rem);
+  font-weight: 200;
+}
+
 .settings {
   width: 80%;
   min-width: 250px;
