@@ -41,6 +41,7 @@ body {
   display: grid;
   gap: 5px;
   padding: 5px;
+  margin-block: 1rem;
   grid-template-rows: repeat(10, 1fr);
   grid-template-columns: repeat(10, 1fr);
   border-radius: 16px;
