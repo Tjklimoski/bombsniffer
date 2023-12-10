@@ -21,7 +21,8 @@ body {
 }
 
 #root {
-  width: clamp(200px, 50vmin, 1000px);
+  width: 90%;
+  max-width: 650px;
 }
 
 .title {
