@@ -16,7 +16,6 @@ body {
   font-family: "Oswald", Helvetica, Arial, sans-serif;
   background-color: #222;
   color: #eee;
-  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
